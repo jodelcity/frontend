@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<label xmlns="http://www.miracle-label.eu/ns/2.0/">
+<age-declaration>
+<issuer>
+<age-issuer>jodel.city</age-issuer>
+<last-change>2016-10-25</last-change>
+<country>
+<country-code>all</country-code>
+</country>
+<custom></custom>
+</issuer>
+<scope>
+<scope-urls>
+<scope-url class="web-url">*.jodel.city/*</scope-url>
+</scope-urls>
+</scope>
+<rating>
+<age>18</age>
+</rating>
+<content-descriptors>
+<cd-sexuality>
+<cd-sexuality-exist>true</cd-sexuality-exist>
+<cd-sexuality-desc></cd-sexuality-desc>
+<cd-sexuality-icon></cd-sexuality-icon>
+</cd-sexuality>
+<cd-other>
+</cd-other>
+</content-descriptors>
+<feature-descriptors>
+<fd-chat>
+<fd-chat-exist>true</fd-chat-exist>
+<fd-chat-desc></fd-chat-desc>
+<fd-chat-icon></fd-chat-icon>
+</fd-chat>
+<fd-other>
+</fd-other>
+</feature-descriptors>
+</age-declaration>
+</label>

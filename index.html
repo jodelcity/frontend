@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>1234 - JodelCity</title>
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <meta name="google" content="notranslate" />
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0084e7">
+        <meta name="apple-mobile-web-app-title" content="JodelCity">
+        <meta name="application-name" content="JodelCity">
+        <meta name="theme-color" content="#0084e7">
+
+        <link rel="stylesheet" href="/css/phonon.min.css" />
+        <link rel="stylesheet" href="/css/material-refresh.min.css" />
+        <link rel="stylesheet" href="/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/css/photoswipe.css" />
+        <link rel="stylesheet" href="/css/photoswipe-skin.css" />
+        <link rel="stylesheet" href="/css/app.css" />
+    </head>
+    <body data-uid="9876543210abcdef" class="preload">
+
+        <!-- Panel tags go here -->
+        <div id="capturepanel" class="panel">
+            <header class="header-bar">
+              <button class="btn icon icon-close pull-left" data-panel-close="true"></button>
+              <div class="center">
+                  <h1 class="title">Aufnahmeoptionen</h1>
+              </div>
+            </header>
+            <div class="content">
+                <ul class="list">
+                    <li id="capturepanelpic">
+                        <button>
+                            <i class="fa fa-camera fa-fw"></i>
+                            Foto aufnehmen
+                        </button>
+                    </li>
+                    <li id="capturepanelvid">
+                        <button>
+                            <i class="fa fa-video-camera fa-fw"></i>
+                            Video aufnehmen
+                        </button>
+                    </li>
+                    <li id="capturepanelsyspic">
+                        <button>
+                            <i class="fa fa-file-image-o fa-fw"></i>
+                            Foto senden
+                        </button>
+                    </li>
+                    <li id="capturepanelsysvid">
+                        <button>
+                            <i class="fa fa-file-video-o fa-fw"></i>
+                            Video senden
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="photopanel" class="panel-full">
+            <header class="header-bar">
+              <button tabindex="-1" id="retakephoto" class="btn icon icon-close pull-left" data-panel-close="true"></button>
+              <button tabindex="-1" id="sendphoto" class="btn pull-right primary">Absenden</button>
+            </header>
+            <div class="content">
+                <div id="photo-container">
+                    <canvas id="canvas">
+                    </canvas>
+                    <div class="output">
+                        <img id="photo" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="videopanel" class="panel-full">
+            <header class="header-bar">
+              <button tabindex="-1" id="retakevideo" class="btn icon icon-close pull-left" data-panel-close="true"></button>
+              <div class="center">
+                <h1 class="title"></h1>
+              </div>
+              <button tabindex="-1" id="sendvideo" class="btn pull-right primary">Absenden</button>
+            </header>
+            <div class="content">
+                <div class="video-container">
+                    <div class="output">
+                        <video id="videoreview" autoplay loop controls></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panel tags go here -->
+
+        <div class="side-panel side-panel-left" data-expose-aside="none" data-disable="right" data-page="home" id="side-home">
+            <header class="header-bar">
+                <button class="btn pull-right icon icon-close" data-side-panel-close="true"></button>
+                <div class="pull-left">
+                    <h1 class="title">JodelCity WebApp</h1>
+                </div>
+            </header>
+
+            <div class="content">
+                <ul class="list">
+                    <li id="nametagmenuitem">
+                        <div class="padded-list">
+                            <i class="fa fa-hashtag fa-fw"></i>
+                            Tag/Name angeben
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sendtagonoff" autocomplete="off" tabindex="-1">
+                                <label class="onoffswitch-label" for="sendtagonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="currenttag" class="padded-list hidden">
+                            <form action="#" id="nametagform">
+                                <input type="text" placeholder="#DeinTag" id="nametag" value="" autocomplete="off" maxlength="20" tabindex="-1" />
+                                <input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1" />
+                            </form>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-map-marker fa-fw"></i>
+                            Stadt angeben
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sendloconoff" autocomplete="off" tabindex="-1">
+                                <label class="onoffswitch-label" for="sendloconoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="currentloc" class="padded-list hidden">
+                            <form action="#" id="locationform">
+                                <input type="text" placeholder="Vorwahl, größere Stadt, ..." id="location" value="" autocomplete="off" tabindex="-1" maxlength="42" />
+                                <input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1" />
+                            </form>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-id-card-o fa-fw"></i>
+                            Details angeben
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="senddetailsonoff" autocomplete="off" tabindex="-1">
+                                <label class="onoffswitch-label" for="senddetailsonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="currentdetails" class="padded-list hidden">
+                            <form action="#" id="detailsform">
+                                <select id="detailsgender" tabindex="-1">
+                                <option value="">Geschlecht</option>
+                                <option value="M">Männlich</option>
+                                <option value="W">Weiblich</option>
+                                </select>
+                                <select id="detailsage" tabindex="-1">
+                                <option value="">Alter</option>
+                                <option value="18">18 Jahre</option>
+                                <option value="19">19 Jahre</option>
+                                <option value="20">20 Jahre</option>
+                                <option value="21">21 Jahre</option>
+                                <option value="22">22 Jahre</option>
+                                <option value="23">23 Jahre</option>
+                                <option value="24">24 Jahre</option>
+                                <option value="25">25 Jahre</option>
+                                <option value="26">26 Jahre</option>
+                                <option value="27">27 Jahre</option>
+                                <option value="28">28 Jahre</option>
+                                <option value="29">29 Jahre</option>
+                                <option value="30">30 Jahre</option>
+                                <option value="31">31 Jahre</option>
+                                <option value="32">32 Jahre</option>
+                                <option value="33">33 Jahre</option>
+                                <option value="34">34 Jahre</option>
+                                <option value="35">35 Jahre</option>
+                                <option value="36">36 Jahre</option>
+                                <option value="37">37 Jahre</option>
+                                <option value="38">38 Jahre</option>
+                                <option value="39">39 Jahre</option>
+                                <option value="40">40 Jahre</option>
+                                <option value="41">41 Jahre</option>
+                                <option value="42">42 Jahre</option>
+                                <option value="43">43 Jahre</option>
+                                <option value="44">44 Jahre</option>
+                                <option value="45">45 Jahre</option>
+                                <option value="46">46 Jahre</option>
+                                <option value="47">47 Jahre</option>
+                                <option value="48">48 Jahre</option>
+                                <option value="49">49 Jahre</option>
+                                </select>
+                                <input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1" />
+                            </form>
+                        </div>
+                    </li>
+<!--
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-picture-o fa-fw"></i>
+                            Nur Fotos anzeigen
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="filterpicsonoff" autocomplete="off">
+                                <label class="onoffswitch-label" for="filterpicsonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </li>
+-->
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-refresh fa-fw"></i>
+                            Live-Aktualisierung
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="livesubonoff" checked="checked" autocomplete="off" tabindex="-1">
+                                <label class="onoffswitch-label" for="livesubonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </li>
+<!--
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-hashtag fa-fw"></i>
+                            Tags / Mentions
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="tagmodeonoff" autocomplete="off">
+                                <label class="onoffswitch-label" for="tagmodeonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </li>
+-->
+                    <li>
+                        <div class="padded-list">
+                            <i class="fa fa-moon-o fa-fw"></i>
+                            Nachtmodus
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="nightmodeonoff" autocomplete="off" tabindex="-1">
+                                <label class="onoffswitch-label" for="nightmodeonoff">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li><a href="#!slideshow" class="padded-list" tabindex="-1"><i class="fa fa-picture-o fa-fw"></i> Slideshow</a></li>
+
+                    <li><a href="#!faq" class="padded-list" tabindex="-1"><i class="fa fa-question-circle fa-fw"></i> FAQ</a></li>
+<!--
+                    <li><a class="padded-list"><i class="fa fa-support fa-fw"></i> Feedback / Kontakt</a></li>
+-->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Notification tags go here -->
+
+        <div class="notification" id="notif-connected" data-timeout="1500">
+            <div class="progress"><div class="determinate"></div></div>
+            <i class="icon icon-sync btn pull-left"></i> Live-Verbindung hergestellt!
+        </div>
+
+        <div class="notification" id="notif-disconnected" data-timeout="5000">
+            <div class="progress"><div class="determinate"></div></div>
+            <i class="icon icon-sync-problem btn pull-left"></i> Live-Verbindung wurde unterbrochen...<br/>
+            Erneuter Verbindungsversuch...
+            <button tabindex="-1" id="sub-stop-btn" class="btn pull-right" data-hide-notif="true">Stop</button>
+        </div>
+
+        <!-- Dialog tags go here -->
+
+        <!-- Popover tags go here -->
+        <div class="popover" id="channels-menu">
+            <ul class="list">
+            </ul>
+        </div>
+
+        <!-- the home page is the default one. This page does not require to call its content because we define on its tag.-->
+        <home data-page="true">
+
+            <header class="header-bar">
+                <button tabindex="-1" id="menubtn" class="btn pull-left icon icon-menu"></button>
+                <div class="center">
+                    <h1 id="title-bar" class="title arrow">1234</h1>
+                </div>
+                <div id="subscribers" class="title"></div>
+            </header>
+            <div id="info-bar">
+                <div id="info-bar-refresh" class="info-bar">
+                    <i class="fa fa-refresh"></i>
+                    Eine neue Version ist verfügbar:
+                    <a href="/1234">Seite neu laden</a>
+                </div>
+                <div id="info-bar-menu" class="info-bar">
+                    <!--<button id="info-bar-menu-close" class="pull-right btn-flat icon icon-close"></button>-->
+                    <i class="fa fa-long-arrow-up"></i>
+                    Drücke auf <i class="fa fa-bars"></i> um das Menü zu öffnen
+                </div>
+                <div id="info-bar-privbr" class="info-bar">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    Safari Privatmodus macht Probleme
+                </div>
+            </div>
+            <nav class="tabs header-tabs">
+                <div class="tab-items">
+                    <a id="tab-item-home" class="tab-item"><i class="icon icon-home"></i></a>
+                    <a id="tab-item-comment" class="tab-item"><i class="fa fa-comment fa-lg"></i></a>
+                    <a id="tab-item-photo" class="tab-item"><i class="fa fa-camera fa-lg"></i></a>
+                </div>
+                <div class="tab-indicator"></div>
+            </nav>
+            <div class="content" data-tab-contents="true" data-disable-swipe="false" data-tab-default="1">
+                <div class="tab-content" id="feed">
+                    <ul id="contentArea" class="list"><li data-mid="1" data-uid="-1" data-no="-1" class="infotext">
+    <div class="padded-full">
+        <h2>Achtung! Unzensierte und ungefilterte Inhalte!</h2>
+        <h4>
+            Diese Web-App erlaubt es jedem Besucher anonym hier Textkommentare und kurze Aufnamen bzw. Schnappschüsse von der Kamera einzustellen!
+            Bitte sei dir im Klaren darüber was das bedeutet, glaube niemandem hier und treib es selbst auch nicht zu bunt!
+        </h4>
+        <h4>
+            Falls du minderjährig bist oder nur zufällig über diese Seite gestolpert bist hast du hier definitiv nichts verloren, bitte geh dich wo anders umschauen…
+        </h4>
+        <h4>
+            Sämtliche Inhalte werden in regelmäßigen Abständen (täglich morgens um 09:59 und abends um 21:59 Uhr) gelöscht und sind somit nur temporär verfügbar…
+        </h4>
+        <h4>
+            Die ganze Seite hier wurde entworfen aus Langeweile und Spaß am Basteln und ist als kleines Experiment zu betrachten.
+            <!-- ich vermute es wird eh nicht lange dauern bis der Müll überhand nimmt und die Seite dann gezwungenermaßen wieder verschwindet... -->
+        </h4>
+        <h4>
+            Bei weiteren Fragen oder Problemen schreib mir eine E-Mail an: admin@jodel.city
+        </h4>
+    </div>
+    <div class="padded-full">
+        <button id="readinfobtn" data-ver="1" class="btn negative fit-parent"><i class="icon icon-check"></i> Alles klar, hab ich verstanden!</button>
+    </div>
+</li>
+
+</ul>
+                </div>
+                <div class="tab-content">
+                    <div class="padded-full">
+                        <form action="#" id="commentform">
+                            <textarea id="comment" tabindex="-1" placeholder="Schreibe einen neuen Kommentar..." maxlength="1024" /></textarea>
+                            <button type="submit" id="sendcomment" class="fit-parent btn primary" disabled="disabled">Absenden</button>
+                        </form>
+                        <div id="hashtagbtns"></div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="video-container">
+                        <video id="video" autoplay></video>
+                    </div>
+                    <div id="systemPhoto" class="hidden">
+                        <div class="padded-full">
+                            <h3>Foto senden</h3>
+                            <h4>Achtung: nur für aktuelle Schnappschüsse, nicht für Galerie-Uploads!</h4>
+                            <label class="cameraButton btn primary fit-parent">
+                                <br/>
+                                Menü aufklappen und Foto auswählen<br/>
+                                <input id="fallbackFile" type="file" accept="image/*" capture="camera" onchange="takepicturefallback(this)" />
+                            </label>
+                            <h5>(evtl. musst du zwei mal oder etwas länger auf den Button tippen damit er funktioniert)</h5>
+                        </div>
+                    </div>
+                    <div id="systemVideo" class="hidden">
+                        <div class="padded-full">
+                            <h3>Video senden</h3>
+                            <h4>Achtung: nur für aktuelle Clips, nicht für Galerie-Uploads!</h4>
+                            <label class="cameraButton btn primary fit-parent">
+                                <br/>
+                                Menü aufklappen und Video auswählen<br/>
+                                <input id="videoFile" name="vid" type="file" accept="video/*" capture="camcorder" onchange="takevideo(this)" />
+                            </label>
+                            <h5>(evtl. musst du zwei mal oder etwas länger auf den Button tippen damit er funktioniert)</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="flacbtn" tabindex="-1" class="floating-action padded-full icon icon-expand-more active primary"></button>
+            <div id="video-btns" class="hidden">
+              <button tabindex="-1" id="capturemenu" class="btn btn-flat icon icon-more-horiz"></button>
+              <button tabindex="-1" id="capturephoto" class="btn primary"><i class="fa fa-camera fa-2x fa-fw"></i></button>
+              <button tabindex="-1" id="capturestart" class="btn primary negative hidden"><i class="fa fa-video-camera fa-2x fa-fw"></i></button>
+              <button tabindex="-1" id="capturestop" class="btn primary hidden"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i></button>
+              <button tabindex="-1" id="switchsource" class="btn btn-flat icon icon-sync"></button>
+              <button tabindex="-1" id="capturetime" class="btn btn-flat hidden">00:00</button>
+            </div>
+        </home>
+
+        <photo data-page="true" data-navigation="$previous-page">
+            <div id="photoview-container" data-navigation="$previous-page">
+                <img id="photoview" alt="" data-navigation="$previous-page"/>
+            </div>
+        </photo>
+
+        <vid data-page="true" data-navigation="$previous-page">
+            <div id="videoview-container" data-navigation="$previous-page">
+                <video id="videoview" data-navigation="$previous-page" autoplay loop controls controlsList="nodownload"></video>
+            </div>
+        </vid>
+
+        <faq data-page="true" data-loader="true"></faq>
+
+        <slideshow data-page="true">
+            <header class="header-bar">
+                <div class="left">
+                    <a class="btn pull-left icon icon-arrow-back" href="#!home" id="slideshowbackbtn"></a>
+                    <h1 class="title">Slideshow</h1>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="padded-full">
+                    <h1></h1>
+                    <div id="slideshoworder">
+                        <h4>Reihenfolge:</h4>
+                        <button data-type="1" class="btn slideshowbtn"><i class="fa fa-picture-o fa-fw"></i> nach Zeit</button>
+                        <button data-type="2" class="btn slideshowbtn"><i class="fa fa-picture-o fa-fw"></i> nach Votes</button>
+                    </div>
+
+                        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="pswp__bg"></div>
+                            <div class="pswp__scroll-wrap">
+                                <div class="pswp__container">
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                </div>
+                                <div class="pswp__ui pswp__ui--hidden">
+                                    <div class="pswp__top-bar">
+                                        <div class="pswp__counter"></div>
+                                        <button tabindex="-1" class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                                        <button tabindex="-1" class="pswp__button pswp__button--share" title="Share"></button>
+                                        <button tabindex="-1" class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                                        <button tabindex="-1" class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                                        <div class="pswp__preloader">
+                                            <div class="pswp__preloader__icn">
+                                              <div class="pswp__preloader__cut">
+                                                <div class="pswp__preloader__donut"></div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                        <div class="pswp__share-tooltip"></div> 
+                                    </div>
+                                    <button tabindex="-1" class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                                    </button>
+                                    <button tabindex="-1" class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                                    </button>
+                                    <div class="pswp__caption">
+                                        <div class="pswp__caption__center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </slideshow>
+
+        <!-- scripts -->
+        <script src="/js/phonon.min.js"></script>
+        <script src="/js/zepto.min.js"></script>
+        <script src="/js/zepto.touchx.min.js"></script>
+        <script src="/js/msr.min.js"></script>
+        <script src="/js/adapter.min.js"></script>
+        <script src="/js/autosize.min.js"></script>
+        <script src="/js/nchan.min.js"></script>
+        <script src="/js/clusterize.min.js"></script>
+        <script src="/js/zepto.timeago.min.js"></script>
+        <script src="/js/material-refresh.min.js"></script>
+        <script src="/js/ifvisible.min.js"></script>
+        <script src="/js/zepto.autocomplete.min.js"></script>
+        <script src="/js/lockr.min.js"></script>
+        <script src="/js/exif.min.js"></script>
+        <script src="/js/photoswipe.min.js"></script>
+        <script src="/js/photoswipe-ui-default.min.js"></script>
+
+        <!-- our app config -->
+        <script src="/js/app.js"></script>
+    </body>
+</html>

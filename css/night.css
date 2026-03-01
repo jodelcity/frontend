@@ -1,0 +1,52 @@
+.app-page,
+#feed,
+#feed > ul > li {
+  background-color: #212121;
+  color: rgba(255, 255, 255, 0.87);
+}
+.list li {
+  border-bottom-color: #888 !important;
+}
+.tabs {
+  background-color: #212121;
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* color: #0D47A1; */
+}
+.tabs,
+.header-bar {
+  opacity: 0.87;
+}
+.favbtn {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: rgba(255, 255, 255, 0.87);
+  opacity: 1 !important;
+}
+.readmore::before {
+  background-image: linear-gradient(rgba(33,33,33,0), #212121);
+}
+.btn {
+  background-color: #616161;
+  color: rgba(255, 255, 255, 0.87);
+}
+.dialog .btn {
+  color: #333;
+}
+textarea {
+  background-color: #424242;
+  color: rgba(255, 255, 255, 0.87);
+  border-bottom-color: #616161;
+}
+.btn.primary {
+  opacity: 0.87;
+}
+table thead tr th, .table thead tr th {
+  background-color: #424242;
+}
+
+.hashtag-clickable {
+    color: rgba(255,255,255,0.87) !important;
+}
+.hashtag-channel i {
+    color: #4F8A10 !important;
+}
+

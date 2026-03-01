@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<age-declaration>
+<ageblock-basic>
+<age-issuer>jodel.city</age-issuer>
+<last-change>2016-10-25</last-change>
+<country>de</country>
+<label-version>1.0</label-version>
+<revisit-after>1days</revisit-after>
+</ageblock-basic>
+<ageblock-labeltype>
+<httpheader>false</httpheader>
+<htmlmeta>false</htmlmeta>
+<label-z>false</label-z>
+<xmlfile>true</xmlfile>
+<default-age>18</default-age>
+</ageblock-labeltype>
+<ageblock-labeltype-definition>        
+<labeltype-xmlfile>
+<label class="website">
+<age>18</age>
+<min-age>0</min-age>
+<default-age>18</default-age>
+<scope>*.jodel.city</scope>
+</label>
+</labeltype-xmlfile>
+</ageblock-labeltype-definition>
+</age-declaration>
