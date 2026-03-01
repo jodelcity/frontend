@@ -6,13 +6,24 @@ not the actual production repo, just a static version of the frontend that might
 
 ## Develop
 
+The proxy server serves local static files from this repository while proxying all other requests (API calls, websockets) upstream to www.jodel.city:
+
+**Features:**
+- Serves local CSS, JS, images, and fonts
+- Handles cache-busting suffixes (e.g., `app.1763463330.js` → `app.js`)
+- Uses local HTML template with dynamic values from upstream (uid, page title, channel info)
+- Generates/forwards `__cfduid` cookie
+
 ```
-$ python3 -m http.server 8000
-Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+$ python3 proxy.py
 ```
 
-then go to http://0.0.0.0:8000/#!home
+Then open http://localhost:8000/ in your browser.
 
-With this you can only look at it, all the XHRs and websockets are failing and there's no messages…
+You'll need to work around CORS errors, so you probably want something like [this](https://chromewebstore.google.com/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf) extension in your browser.
 
-but I could imagine writing a little proxy in this repo that proxies such requests upstream to jodel.city servers but serves the frontend from here - PR?
+This allows full functionality including:
+- Live posts and real-time updates
+- Posting comments, photos, and videos
+- All interactive features
+
