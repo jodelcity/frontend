@@ -837,7 +837,7 @@ var nightmodesheet = (function() {
   var cssfile = document.createElement("link");
   cssfile.setAttribute("rel", "stylesheet");
   cssfile.setAttribute("type", "text/css");
-  cssfile.setAttribute("href", (document.location.pathname || '/2230') + '/night.css');
+  cssfile.setAttribute("href", '/css/night.css');
   cssfile.setAttribute("disabled", true);
   document.head.appendChild(cssfile);
   if(Lockr.get('NightThemeOn')) {

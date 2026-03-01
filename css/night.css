@@ -49,4 +49,16 @@ table thead tr th, .table thead tr th {
 .hashtag-channel i {
     color: #4F8A10 !important;
 }
-
+.popover {
+  background-color: #212121;
+}
+#channels-menu .list li a {
+  color: rgba(255, 255, 255, 0.87);
+}
+#channels-menu .list li.current {
+  background-color: #424242;
+}
+#channels-menu .date.s {color: #0084e7;}
+#channels-menu .date.m {color: #fff;}
+#channels-menu .date.h {color: #666;}
+#channels-menu .date.d {color: #aaa;}
