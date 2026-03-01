@@ -10,6 +10,7 @@ The proxy server serves local static files from this repository while proxying a
 
 **Features:**
 - Serves local CSS, JS, images, and fonts
+- Root path `/` redirects to a meeting channel based on mtime of `.git/refs/remotes` (typically this is the moment in time you `git clone` this repo, so everyone gets their own emtpy playground channel for themself)
 - Handles cache-busting suffixes (e.g., `app.1763463330.js` → `app.js`)
 - Uses local HTML template with dynamic values from upstream (uid, page title, channel info)
 - Generates/forwards `__cfduid` cookie

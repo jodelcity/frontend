@@ -22,6 +22,12 @@ Then navigate to `http://localhost:8000/#!home`
 
 The proxy server serves local static files (CSS, JS, images) while proxying API calls and websockets to https://www.jodel.city/. This enables full functionality including live updates, posting, and all interactive features.
 
+**Root Path Redirect:**
+- Visiting `/` redirects to a channel path derived from git refs mtime
+- Uses Unix timestamp of `.git/refs/remotes` modification time (e.g., `/1772328232`)
+- Falls back to current date format (`YYYYMMDD`) if git refs unavailable
+- The redirected path uses the HTML template with dynamic upstream data
+
 **Dynamic HTML Template:**
 - Channel pages (any numeric URL with 3+ digits, e.g., `/123`, `/1234`, `/202603012230`) use `app.html`
 - Dynamic values are extracted from upstream and filled into the template:

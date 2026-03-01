@@ -188,12 +188,29 @@ class ProxyRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
 
-        # Special case: root path redirects to /YYYYMMDD2230 (current local date + 2230)
+        # Special case: root path redirects to channel based on git refs mtime
         if parsed_path.path == '/' or parsed_path.path == '':
             import datetime
-            today = datetime.date.today()
-            redirect_path = f"/{today.strftime('%Y%m%d')}2230"
-            self.log_message("Root path redirect: %s -> %s", self.path, redirect_path)
+            import time
+
+            # Try to get mtime of .git/refs/remotes
+            refs_path = LOCAL_PATH / '.git' / 'refs' / 'remotes'
+            redirect_path = None
+
+            if refs_path.exists():
+                try:
+                    mtime = refs_path.stat().st_mtime
+                    redirect_path = f"/{int(mtime)}"
+                    self.log_message("Root path redirect using git refs mtime: %s -> %s", self.path, redirect_path)
+                except Exception as e:
+                    self.log_message("Failed to get git refs mtime: %s", e)
+
+            # Fallback to YYYYMMDD if git refs mtime failed
+            if redirect_path is None:
+                today = datetime.date.today()
+                redirect_path = f"/{today.strftime('%Y%m%d')}"
+                self.log_message("Root path redirect using date fallback: %s -> %s", self.path, redirect_path)
+
             self.send_response(302)
             self.send_header('Location', redirect_path)
             self.end_headers()
