@@ -771,6 +771,8 @@ li > div.no > button {
     margin: 0;
     cursor: pointer;
     background-color: inherit;
+    word-break: break-all;
+    text-align: left;
 }
 .hashtag-channel i {
     color: #4F8A10 !important;
