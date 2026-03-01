@@ -278,7 +278,7 @@ class ProxyRequestHandler(http.server.SimpleHTTPRequestHandler):
         if ext.lower() in LOCAL_EXTENSIONS:
             return True
 
-        # Root path serves index.html
+        # Root path serves redirect
         if path == '/' or path == '':
             return True
 

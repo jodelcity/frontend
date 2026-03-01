@@ -23,7 +23,7 @@ Then navigate to `http://localhost:8000/#!home`
 The proxy server serves local static files (CSS, JS, images) while proxying API calls and websockets to https://www.jodel.city/. This enables full functionality including live updates, posting, and all interactive features.
 
 **Dynamic HTML Template:**
-- Channel pages (any numeric URL with 3+ digits, e.g., `/123`, `/1234`, `/202603012230`) use `index.html.template`
+- Channel pages (any numeric URL with 3+ digits, e.g., `/123`, `/1234`, `/202603012230`) use `app.html`
 - Dynamic values are extracted from upstream and filled into the template:
   - `{{DATA_UID}}` - User ID
   - `{{PAGE_TITLE}}` - Page title (e.g., "202603012230 - test - JodelCity")
@@ -57,9 +57,10 @@ The `make.bash` script generates error pages from comments in the script itself 
 
 ### File Structure
 
-- `index.html` - Main HTML structure with Phonon pages (`<home>`, `<photo>`, `<vid>`, `<faq>`, `<slideshow>`)
-- `js/app.js` - All application logic (~2900 lines)
-- `css/` - Stylesheets (Phonon base, Material Refresh, Font Awesome, app-specific)
+- `app.html` - Main HTML structure with Phonon pages (`<home>`, `<photo>`, `<vid>`, `<faq>`, `<slideshow>`) and templated variables
+- `app.js` - All application logic (~2900 lines)
+- `app.css` - Main application Stylesheet
+- `css/` - Other Stylesheets (Phonon base, Material Refresh, Font Awesome, app-specific)
 - `errors/` - HTTP error page templates
 - `fonts/`, `img/`, `images/` - Static assets
 

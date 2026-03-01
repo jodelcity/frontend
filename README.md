@@ -27,3 +27,12 @@ This allows full functionality including:
 - Posting comments, photos, and videos
 - All interactive features
 
+**Local File Structure:**
+
+- `app.html` - Main HTML structure with Phonon pages and templated variables
+- `app.js` - All application logic
+- `app.css` - Main stylesheet
+- `css/` - Other Stylesheets (Phonon base, Material Refresh, Font Awesome, app-specific)
+- `errors/` - HTTP error page templates
+- `fonts/`, `img/`, `images/` - Static assets
+
