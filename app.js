@@ -109,12 +109,22 @@ var dbg = 0; /* 0: no debug log, 1: console.log, 2: Ajax-POST to errorlog, 4: st
 
 // if(document.location.href.match(/2345/)) dbg=2;
 // if(Lockr.get('Nametag') == '#debug' || Lockr.get('Nametag') == '#admin') dbg|=4;
+Lockr.rm('Location');
 
 if($ && $.ajax) {
   $.ajax({url:"/000?authtoken", xhrFields: {withCredentials: true}});
   var authtokenInterval = setInterval(function() {
     $.ajax({url:"/000?authtoken", xhrFields: {withCredentials: true}});
   }, 300000);
+}
+
+if(document && document.addEventListener) {
+  document.addEventListener('visibilitychange', function() {
+    if(!document.hidden && $ && $.ajax) {
+      log('Visibility change: refreshing authtoken');
+      $.ajax({url:"/000?authtoken", xhrFields: {withCredentials: true}});
+    }
+  });
 }
 
 function log() {
@@ -354,7 +364,7 @@ if(hashtagHistory = Lockr.get('HashtagHistory')) {
   hashtagHistory = [];
 }
 
-if(Lockr.get('Location') || $('#location').val()) {
+if(Lockr.get('LocationCity') || $('#location').val()) {
   init = null;
   nearLocations = Lockr.get('LocationsNear') || [];
 }
@@ -1475,7 +1485,7 @@ $('#commentform').on('submit', function(ev) {
           text: text
     };
     if(Lockr.get('LocationOn')) {
-        postData['loc'] = Lockr.get('LocationName') || Lockr.get('Location');
+        postData['loc'] = Lockr.get('LocationName') || Lockr.get('LocationCity');
     }
     if(Lockr.get('NametagOn') && !Lockr.get('TagModeOff') && Lockr.get('Nametag')) {
         postData['tag'] = Lockr.get('Nametag');
@@ -1959,7 +1969,7 @@ $('#capturestart').on('click', function() {
     videoPostData = new FormData();
     videoPostData.append('t', blob.type);
     if(Lockr.get('LocationOn')) {
-        videoPostData.append('loc', Lockr.get('LocationName') || Lockr.get('Location'));
+        videoPostData.append('loc', Lockr.get('LocationName') || Lockr.get('LocationCity'));
     }
     if(Lockr.get('NametagOn') && !Lockr.get('TagModeOff') && Lockr.get('Nametag')) {
         videoPostData.append('tag', Lockr.get('Nametag'));
@@ -2029,7 +2039,7 @@ $('#sendphoto').on(phonon.event.end, function() {
     if(photo.getAttribute('data-oh')) postData['oh'] = photo.getAttribute('data-oh');
     if(photo.getAttribute('data-fn')) postData['fn'] = photo.getAttribute('data-fn');
     if(Lockr.get('LocationOn')) {
-        postData['loc'] = Lockr.get('LocationName') || Lockr.get('Location');
+        postData['loc'] = Lockr.get('LocationName') || Lockr.get('LocationCity');
     }
     if(Lockr.get('NametagOn') && !Lockr.get('TagModeOff') && Lockr.get('Nametag')) {
         postData['tag'] = Lockr.get('Nametag');
@@ -2068,7 +2078,7 @@ $('#retakephoto').on(phonon.event.end, function() {
 
 (function DoNotTouchThisFunction(arg, callback){
     var time = 0;
-    return !arg != !callback || $.ajax(arg = $.extend(this.arg = {url: '/?ip', dataType: 'json', trigger: (function(args) {
+    return !arg != !callback || $.ajax(arg = $.extend(this.arg = {url: '/?ip', dataType: 'json', crossDomain: true, trigger: (function(args) {
         return function(undefined) {
             arg = $.extend((this.arg = function(arg) {
                 if(arg) {
@@ -2191,7 +2201,7 @@ function takevideo(input) {
     var fn = btoa(unescape(encodeURIComponent(input.value)));
     if(fn) videoPostData.append('fn', fn);
     if(Lockr.get('LocationOn')) {
-        videoPostData.append('loc', Lockr.get('LocationName') || Lockr.get('Location'));
+        videoPostData.append('loc', Lockr.get('LocationName') || Lockr.get('LocationCity'));
     }
     if(Lockr.get('NametagOn') && !Lockr.get('TagModeOff') && Lockr.get('Nametag')) {
         videoPostData.append('tag', Lockr.get('Nametag'));
@@ -2518,7 +2528,7 @@ $('#menubtn').on(phonon.event.hasTouch ? 'tap' : 'click', function() {
 });
 
 var setLocation = function(city) {
-  var oldLocationOn = Lockr.get('LocationOn'), oldLocationName = Lockr.get('LocationName'), oldLocation = Lockr.get('Location');
+  var oldLocationOn = Lockr.get('LocationOn'), oldLocationName = Lockr.get('LocationName'), oldLocation = Lockr.get('LocationCity');
   if(!city || !(city.trim())) {
     if(oldLocationOn) phonon.notif('Der Standort wird ab jetzt nicht mehr angegeben...', 3000, false);
     Lockr.set('LocationOn', false);
@@ -2526,7 +2536,7 @@ var setLocation = function(city) {
     return;
   }
   Lockr.set('LocationOn', true);
-  Lockr.set('Location', city);
+  Lockr.set('LocationCity', city);
   var match = city.match(/^[0-9]+ - (.+)$/);
   if(match && match[1]) city = match[1];
   Lockr.set('LocationName', city);
@@ -2539,7 +2549,7 @@ $('#sendloconoff').on('change', function(el) {
   if(el.target.checked) {
     $('#currentloc').removeClass('hidden').addClass('show');
     var newLoc = ($('#location').val().trim());
-    if(newLoc && (Lockr.get('Location') || Lockr.get('LocationName'))) setLocation(newLoc);
+    if(newLoc && (Lockr.get('LocationCity') || Lockr.get('LocationName'))) setLocation(newLoc);
   } else {
     $('#currentloc').removeClass('show').addClass('hidden');
     setLocation('');
@@ -2547,7 +2557,7 @@ $('#sendloconoff').on('change', function(el) {
 });
 
 var loadLocation = function() {
-  var oldLocationOn = Lockr.get('LocationOn'), oldLocationName = Lockr.get('LocationName'), oldLocation = Lockr.get('Location');
+  var oldLocationOn = Lockr.get('LocationOn'), oldLocationName = Lockr.get('LocationName'), oldLocation = Lockr.get('LocationCity');
   if(oldLocation) {
     $('#location').val(oldLocation);
   } else if (oldLocationName) {
@@ -2903,7 +2913,7 @@ hashtagRE = /((?:^|$|(?!(?:[A-Za-z\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c
 
 // move (first) hashtag from location to tag if tag is currently emtpy or disabled
 if(Lockr.get('LocationOn') && (!Lockr.get('NametagOn') || !Lockr.get('Nametag'))) {
-    var loc = Lockr.get('LocationName') || Lockr.get('Location');
+    var loc = Lockr.get('LocationName') || Lockr.get('LocationCity');
     var tag = Lockr.get('Nametag');
     if(!Lockr.get('NametagOn')) tag = '';
     if(loc && !tag) {
@@ -2917,7 +2927,7 @@ if(Lockr.get('LocationOn') && (!Lockr.get('NametagOn') || !Lockr.get('Nametag'))
         Lockr.set('NametagOn', true);
         Lockr.set('Nametag', newTag);
         Lockr.set('LocationName', newLoc.trim());
-        Lockr.set('Location', newLoc.trim());
+        Lockr.set('LocationCity', newLoc.trim());
         if(!newLoc.trim()) {
           Lockr.set('LocationOn', false);
         }
