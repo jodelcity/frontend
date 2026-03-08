@@ -999,7 +999,7 @@ sub.on("message", function(message, message_metadata) {
         }
         if(message.t && message.t == 'p') {
             if(message.topic) { setTopic(message.topic); }
-            if(message.x && message.no in feedData) {
+            if(message.no in feedData) {
 	        feedData[message.no] = message;
                 var html = renderFeedItem(message);
                 feedRows.splice(message.no - 1, 1, html);
