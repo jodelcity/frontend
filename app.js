@@ -26,6 +26,14 @@ var autofocus = !phonon.event.hasTouch;
 var ownUID = $('body').data('uid') || $('body').attr('data-uid');
 var ownNoList = [];
 var textLinks = {
+  'ffmeet': {
+    match: /ffmeet\.net\/jc[0-9a-zA-Z]{3,}/i,
+    href: '$ffmeet',
+    title: 'Externer Link zu Freifunk München Jitsi',
+    message: 'FFMEET ist der freie Jitsi-Konferenzserver von Freifunk München, der Videokonferenzen ohne Anmeldung, Werbung, Tracking, Logging, etc. ermöglicht.',
+    btnyes: 'Link öffnen',
+    btnno: 'Abbrechen'
+  },
   'kongposition': {
     match: /https:\/\/chrome\.google\.com\/webstore\/detail\/user-javascript-and-css\/nbhcbdghjpllgmfilhnhkllmkecfmpld/,
     href: 'https://chrome.google.com/webstore/detail/user-javascript-and-css/nbhcbdghjpllgmfilhnhkllmkecfmpld',
@@ -783,6 +791,7 @@ var makeHashtagsClickable = function(textEl) {
       if(word && entity.word in textLinks) {
         var href = '#';
         if('href' in textLinks[entity.word]) href = textLinks[entity.word].href;
+        if(href == '$ffmeet') href='https://'+entity.hashtag;
         result += '<a href="' + htmlEscape(href) + '" class="hashtag-clickable hashtag-word" ';
         if(entity.word) result += 'data-word="' + htmlEscape(entity.word) + '" ';
         result += 'title="' + htmlEscape(entity.title || entity.word) + '">';
