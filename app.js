@@ -27,10 +27,18 @@ var ownUID = $('body').data('uid') || $('body').attr('data-uid');
 var ownNoList = [];
 var textLinks = {
   'ffmeet': {
-    match: /ffmeet\.net\/jc[0-9a-zA-Z]{3,}/i,
-    href: '$ffmeet',
+    match: /(https:\/\/)?ffmeet\.net\/jc[0-9a-zA-Z]{3,}/i,
+    href: '$url',
     title: 'Externer Link zu Freifunk München Jitsi',
     message: 'FFMEET ist der freie Jitsi-Konferenzserver von Freifunk München, der Videokonferenzen ohne Anmeldung, Werbung, Tracking, Logging, etc. ermöglicht.',
+    btnyes: 'Link öffnen',
+    btnno: 'Abbrechen'
+  },
+  'youtube': {
+    match: /(https:\/\/)?youtu\.be\/[-0-9a-zA-Z?&=]{8,}/i,
+    href: '$url',
+    title: 'Externer Link zu YouTube',
+    message: 'YouTube Link',
     btnyes: 'Link öffnen',
     btnno: 'Abbrechen'
   },
@@ -741,6 +749,8 @@ var makeHashtagsClickable = function(textEl) {
     var index, after = chunk.slice(offset + match.length);
     if (after.match(/^(?:[\/@#＃]|:\/\/)/))
       return;
+    if (offset > 0 && chunk[offset - 1] === ':')
+      return;
     var startPosition = offset + before.length;
     var endPosition = startPosition + hashText.length + 1;
     if(hash != '@' && hash != '/') hash = '#';
@@ -760,7 +770,7 @@ var makeHashtagsClickable = function(textEl) {
          obj.match && obj.match instanceof RegExp && obj.match.source) {
            regExpStr = obj.match.source;
       }
-      text.replace(new RegExp('(?:(^|\\s|\\b)(' + regExpStr + ')(\\s|\\b|$))', 'gi'), function(match, before, content, after, offset, chunk) {
+      text.replace(new RegExp('((?:^|\\s|\\b))(' + regExpStr + ')(\\s|\\b|$)', 'gi'), function(match, before, content, after, offset, chunk) {
         var startPosition = offset + before.length;
         var endPosition = startPosition + content.length;
         clickables.push({
@@ -791,7 +801,7 @@ var makeHashtagsClickable = function(textEl) {
       if(word && entity.word in textLinks) {
         var href = '#';
         if('href' in textLinks[entity.word]) href = textLinks[entity.word].href;
-        if(href == '$ffmeet') href='https://'+entity.hashtag;
+        if(href == '$url') href=(entity.hashtag.startsWith("https://") ? entity.hashtag : ('https://'+entity.hashtag));
         result += '<a href="' + htmlEscape(href) + '" class="hashtag-clickable hashtag-word" ';
         if(entity.word) result += 'data-word="' + htmlEscape(entity.word) + '" ';
         result += 'title="' + htmlEscape(entity.title || entity.word) + '">';
