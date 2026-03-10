@@ -42,19 +42,11 @@ var textLinks = {
     btnyes: 'Link öffnen',
     btnno: 'Abbrechen'
   },
-  'kongposition': {
-    match: /https:\/\/chrome\.google\.com\/webstore\/detail\/user-javascript-and-css\/nbhcbdghjpllgmfilhnhkllmkecfmpld/,
-    href: 'https://chrome.google.com/webstore/detail/user-javascript-and-css/nbhcbdghjpllgmfilhnhkllmkecfmpld',
-    title: 'Externer Link',
-    message: 'Chrome Erweiterung: User JavaScript and CSS',
-    btnyes: 'Link öffnen',
-    btnno: 'Abbrechen'
-  },
-  'birthjodel': {
-    match: /shared\.jodel\.com\/MHlEEbQDj0/,
-    href: 'https://shared.jodel.com/MHlEEbQDj0',
-    title: 'Externer Link',
-    message: 'Link zum jodel.city Geburtsjodel in der Jodel App: https://shared.jodel.com/MHlEEbQDj0',
+  'telegram': {
+    match: /(https:\/\/)?t\.me\/[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]/i,
+    href: '$url',
+    title: 'Externer Link zu Telegram',
+    message: 'Telegram Link',
     btnyes: 'Link öffnen',
     btnno: 'Abbrechen'
   },
@@ -70,6 +62,14 @@ var textLinks = {
     match: /FAQ[\W]?s|FAQ/,
     href: '#!faq',
     title: 'FAQ: Häufige gestellte Fragen'
+  },
+  'tg': {
+    match: /telegram|tg/,
+    href: '#!faq/kik',
+    title: 'FAQ: Telegram Messenger',
+    message: 'Telegram ist eine Chat-App ähnlich wie WhatsApp, Kontakte können allerdings anstatt per Handynummer auch über den Austausch eines frei wählbaren Telegram-Benutzernamens geknüpft werden und man bleibt somit anonym. Die öffentlichen jodel.city-Channels sind allerdings nicht der richtige Ort um ungefragt seinen Kontakt weiterzugeben bzw. andere nach ihren Accounts zu fragen...',
+    btnyes: 'Mehr Info',
+    btnno: 'Verstanden'
   },
   'kik': {
     match: /kik|k+\W*[1ij]+\W*k+/,
@@ -800,14 +800,18 @@ var makeHashtagsClickable = function(textEl) {
     if(entity.hash == 'word') {
       var word = entity.word.toLowerCase();
       if(word && entity.word in textLinks) {
-        var href = '#';
+        var href = '#'; var external = false;
         if('href' in textLinks[entity.word]) href = textLinks[entity.word].href;
-        if(href == '$url') href=(entity.hashtag.startsWith("https://") ? entity.hashtag : ('https://'+entity.hashtag));
-        result += '<a href="' + htmlEscape(href) + '" class="hashtag-clickable hashtag-word" ';
+        if(href == '$url') {
+          href = (entity.hashtag.startsWith("https://") ? entity.hashtag : ('https://'+entity.hashtag));
+          external = true;
+        }
+        result += '<a href="' + htmlEscape(href) + '" class="hashtag-clickable hashtag-word' + (external ? ' url-external' : '') + '" ';
         if(entity.word) result += 'data-word="' + htmlEscape(entity.word) + '" ';
+        if(external) result += 'target="_blank" ';
         result += 'title="' + htmlEscape(entity.title || entity.word) + '">';
         result += htmlEscape(entity.hashtag);
-        // result += ' <i class="fa fa-external-link-square" aria-hidden="true"></i>';
+        if(external) result += ' <i class="fa fa-external-link-square" aria-hidden="true" style="pointer-events: none;"></i>';
         result += '</a>';
       } else {
         result += entity.hash + htmlEscape(entity.hashtag);
@@ -829,7 +833,7 @@ var makeHashtagsClickable = function(textEl) {
         result += '<a href="/' + htmlEscape(entity.hashtag) + '" target="_blank" class="hashtag-clickable hashtag-channel" ';
         result += 'title="Channel ' + htmlEscape(entity.hashtag) + ' öffnen">';
         result += entity.hash + htmlEscape(entity.hashtag);
-        result += ' <i class="fa fa-external-link-square" aria-hidden="true"></i>';
+        result += ' <i class="fa fa-external-link-square" aria-hidden="true" style="pointer-events: none;"></i>';
         result += '</a>';
       } else {
         result += entity.hash + htmlEscape(entity.hashtag);
@@ -1658,7 +1662,11 @@ $(document).on(phonon.event.hasTouch ? 'tap touchend' : 'click', '.hashtag-click
     }
     confirm.on('confirm', function() {
       log('.hashtag-clickable::confirm href='+href);
-      document.location.href=href;
+      if($(clickableEl).hasClass('url-external')) {
+        window.open(href, '_blank').focus();
+      } else {
+        document.location.href=href;
+      }
     });
     confirm.on('cancel', function() {
       log('.hashtag-clickable::cancel');
