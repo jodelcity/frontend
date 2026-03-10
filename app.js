@@ -35,7 +35,7 @@ var textLinks = {
     btnno: 'Abbrechen'
   },
   'youtube': {
-    match: /(https:\/\/)?youtu\.be\/[-0-9a-zA-Z?&=]{8,}/i,
+    match: /(https:\/\/)?youtu\.be\/[-0-9a-zA-Z?&=_]{8,}/i,
     href: '$url',
     title: 'Externer Link zu YouTube',
     message: 'YouTube Link',
@@ -749,7 +749,7 @@ var makeHashtagsClickable = function(textEl) {
     var index, after = chunk.slice(offset + match.length);
     if (after.match(/^(?:[\/@#＃]|:\/\/)/))
       return;
-    if (offset > 0 && chunk[offset - 1] === ':')
+    if (offset > 0 && chunk[offset - 1] === ':' && chunk[offset] === '/')
       return;
     var startPosition = offset + before.length;
     var endPosition = startPosition + hashText.length + 1;
