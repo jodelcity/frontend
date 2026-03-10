@@ -770,7 +770,8 @@ var makeHashtagsClickable = function(textEl) {
          obj.match && obj.match instanceof RegExp && obj.match.source) {
            regExpStr = obj.match.source;
       }
-      text.replace(new RegExp('((?:^|\\s|\\b))(' + regExpStr + ')(\\s|\\b|$)', 'gi'), function(match, before, content, after, offset, chunk) {
+      text.replace(new RegExp('(?:(^|\\s|\\b)(' + regExpStr + ')(\\s|\\b|$))', 'gi'), function(match, before, content) {
+        var offset = arguments[arguments.length - 2];
         var startPosition = offset + before.length;
         var endPosition = startPosition + content.length;
         clickables.push({
